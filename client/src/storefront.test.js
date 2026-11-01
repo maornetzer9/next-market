@@ -85,7 +85,7 @@ test("B3.2 homepage uses real catalog data flow", async () => {
   assert.doesNotMatch(homepage, /fake|mockProducts|placeholder/i);
 });
 
-test("Homepage polish avoids internal demo language", async () => {
+test("Homepage polish avoids internal placeholder language", async () => {
   const [homepage, footer, css] = await Promise.all([
     readFile(homepageUrl, "utf8"),
     readFile(footerUrl, "utf8"),

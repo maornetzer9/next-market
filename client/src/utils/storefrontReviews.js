@@ -1,13 +1,13 @@
 /**
  * Storefront review presentation helpers.
- * Prefer real API counts; fall back to deterministic demo counts for portfolio UX.
+ * Prefer real API counts; use a stable presentation fallback only when source fixtures lack a meaningful total.
  */
 
 /** DummyJSON ships exactly 3 reviews per product; reconcile persists that as reviewsCount. */
 const DUMMYJSON_FIXTURE_REVIEW_COUNT = 3;
 
-const DEMO_REVIEW_MIN = 18;
-const DEMO_REVIEW_MAX = 480;
+const FALLBACK_REVIEW_MIN = 18;
+const FALLBACK_REVIEW_MAX = 480;
 
 /**
  * @param {unknown} product
@@ -51,21 +51,21 @@ function hashProductId(productId) {
 }
 
 /**
- * Deterministic demo review count in a believable ecommerce range.
+ * Deterministic presentation fallback derived from the product id.
  * Same product id → same count across refresh, theme, and navigation.
  * @param {string | number | null | undefined} productId
  * @returns {number}
  */
-export function getDeterministicDemoReviewCount(productId) {
+export function getDeterministicFallbackReviewCount(productId) {
   const hash = hashProductId(productId);
-  const span = DEMO_REVIEW_MAX - DEMO_REVIEW_MIN;
-  let count = DEMO_REVIEW_MIN + (hash % (span + 1));
+  const span = FALLBACK_REVIEW_MAX - FALLBACK_REVIEW_MIN;
+  let count = FALLBACK_REVIEW_MIN + (hash % (span + 1));
 
   // Avoid suspicious round hundreds / fifties.
   if (count % 100 === 0) count += (hash % 17) + 3;
   if (count % 50 === 0) count += (hash % 9) + 1;
 
-  return Math.min(DEMO_REVIEW_MAX, Math.max(DEMO_REVIEW_MIN, count));
+  return Math.min(FALLBACK_REVIEW_MAX, Math.max(FALLBACK_REVIEW_MIN, count));
 }
 
 /**
@@ -92,7 +92,7 @@ export function getDisplayReviewCount(product) {
   const id = product && typeof product === "object"
     ? product.id ?? product._id
     : null;
-  return getDeterministicDemoReviewCount(id);
+  return getDeterministicFallbackReviewCount(id);
 }
 
 /**

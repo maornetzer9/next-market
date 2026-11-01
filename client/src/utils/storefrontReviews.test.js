@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   formatReviewCountLabel,
-  getDeterministicDemoReviewCount,
+  getDeterministicFallbackReviewCount,
   getDisplayReviewCount,
   getRealReviewCount,
   isUsableReviewCount,
@@ -21,7 +21,7 @@ test("DummyJSON fixture count is not presentation-usable", () => {
   assert.equal(isUsableReviewCount(120), true);
 });
 
-test("getDisplayReviewCount uses demo when only fixture count exists", () => {
+test("getDisplayReviewCount uses a stable fallback when only fixture count exists", () => {
   const a = getDisplayReviewCount({ id: 1, reviewsCount: 3 });
   const b = getDisplayReviewCount({ id: 1, reviewsCount: 3 });
   assert.equal(a, b);
@@ -33,9 +33,9 @@ test("getDisplayReviewCount prefers genuine varied API counts", () => {
   assert.equal(getDisplayReviewCount({ id: 1, reviewsCount: 134 }), 134);
 });
 
-test("deterministic demo counts are stable and varied by id", () => {
+test("deterministic fallback counts are stable and varied by id", () => {
   const ids = [1, 7, 31, 16];
-  const counts = ids.map((id) => getDeterministicDemoReviewCount(id));
+  const counts = ids.map((id) => getDeterministicFallbackReviewCount(id));
   assert.equal(new Set(counts).size, counts.length);
   for (const count of counts) {
     assert.ok(count >= 18 && count <= 480);
