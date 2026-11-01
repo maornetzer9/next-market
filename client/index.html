@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="application-name" content="NEXT / MARKET" />
+    <meta name="description" content="NEXT / MARKET — a modern commerce storefront and administration platform." />
+    <meta name="theme-color" content="#eeece7" />
+    <title>NEXT / MARKET</title>
+    <style>
+      html[data-b25-theme='light'], html[data-b25-theme='light'] body { background: #eeece7; color-scheme: light; }
+      html[data-b25-theme='dark'], html[data-b25-theme='dark'] body { background: #171d22; color-scheme: dark; }
+    </style>
+    <script>
+      try {
+        const savedTheme = localStorage.getItem('darkMode');
+        document.documentElement.dataset.b25Theme = savedTheme && JSON.parse(savedTheme) ? 'dark' : 'light';
+      } catch {
+        document.documentElement.dataset.b25Theme = 'light';
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

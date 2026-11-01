@@ -1,0 +1,47 @@
+# Dependencies and package-manager caches
+node_modules/
+.pnpm-store/
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+service-account*.json
+
+# Generated build and test output
+dist/
+dist-ssr/
+coverage/
+test-results/
+playwright-report/
+qa-screenshots/
+design-references/
+implementation-results/
+
+# Logs and local runtime files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.local
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Internal implementation records
+SPEC.md

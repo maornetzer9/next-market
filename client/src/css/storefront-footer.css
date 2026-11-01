@@ -1,0 +1,430 @@
+.storefront-footer {
+  position: relative;
+  flex: 0 0 auto;
+  width: min(100%, var(--b25-content-max));
+  /*
+   * Stick to the bottom of .b25-customer-main on short routes.
+   * Fixed margin-top previously forced ~6px document overflow on Orders
+   * when page + footer almost filled 100dvh.
+   */
+  margin: auto auto 0;
+  padding: var(--b25-space-8) clamp(20px, 3vw, 48px) var(--b25-space-8);
+  border-top: 1px solid color-mix(in srgb, var(--b25-border) 62%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--b25-surface) 18%, transparent), color-mix(in srgb, var(--b25-surface) 52%, var(--b25-canvas-subtle)));
+  overflow: hidden;
+}
+
+.b25-customer-shell.is-dark .storefront-footer {
+  background:
+    linear-gradient(180deg, rgba(39, 46, 51, 0.35), #1f2529);
+  border-top-color: color-mix(in srgb, var(--b25-border) 80%, transparent);
+}
+
+.storefront-footer__trace {
+  position: absolute;
+  top: 0;
+  left: clamp(20px, 3vw, 48px);
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--b25-accent), transparent);
+  opacity: 0.85;
+}
+
+.storefront-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(120px, 0.72fr));
+  gap: clamp(24px, 3.5vw, 48px);
+  align-items: start;
+}
+
+.storefront-footer__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.storefront-footer__brand .auth-brand-mark--footer {
+  margin: 0 0 2px;
+}
+
+.storefront-footer__mark {
+  display: flex;
+  align-items: baseline;
+  gap: var(--b25-space-2);
+  margin: 0;
+  font-family: var(--b25-font-display);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+}
+
+.storefront-footer__mark > span:first-child {
+  color: var(--b25-accent);
+  font-weight: 700;
+}
+
+.storefront-footer__tagline {
+  max-width: 34ch;
+  margin: 0;
+  color: var(--b25-text-secondary);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.storefront-footer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-content: start;
+}
+
+.storefront-footer__label {
+  margin: 0 0 2px;
+  color: var(--b25-text-muted);
+}
+
+.storefront-footer__nav a,
+.storefront-footer__nav button.storefront-footer__action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--b25-text-secondary);
+  /* Beat `.b25-customer-shell button { font: inherit }` (1em → 16px) so auth
+     buttons match canonical footer link metrics exactly. */
+  font-family: var(--b25-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: normal;
+  line-height: 1.45;
+  text-decoration: none;
+  text-transform: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition-property: color;
+  transition-duration: var(--b29-hover-exit, 260ms);
+  transition-timing-function: var(--b29-hover-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+  transition-delay: 0ms;
+}
+
+.storefront-footer__nav a:hover,
+.storefront-footer__nav button.storefront-footer__action:hover {
+  color: var(--b25-accent);
+  transition-duration: var(--b29-hover-enter, 320ms);
+  transition-delay: var(--b29-hover-intent, 80ms);
+}
+
+.storefront-footer__nav a:not(:hover),
+.storefront-footer__nav button.storefront-footer__action:not(:hover) {
+  transition-duration: var(--b29-hover-exit, 260ms);
+  transition-delay: 0ms;
+}
+
+.storefront-footer__legal {
+  margin: var(--b25-space-6) 0 0;
+  padding-top: var(--b25-space-4);
+  border-top: 1px solid color-mix(in srgb, var(--b25-border) 55%, transparent);
+  color: var(--b25-text-muted);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Phone compact footer — hidden on desktop/tablet. */
+.storefront-footer__mobile {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .storefront-footer__inner {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .storefront-footer__brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 820px) {
+  .storefront-footer {
+    margin-top: auto;
+    padding-bottom: calc(var(--b25-space-6) + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 768px) {
+  .storefront-footer__inner {
+    grid-template-columns: 1fr;
+    gap: var(--b25-space-5);
+  }
+
+  .storefront-footer__nav a {
+    min-height: 44px;
+  }
+}
+
+/*
+ * Phone (<=767): restore a compact editorial footer in page flow.
+ * Bottom nav + Categories sheet remain separate; do not dump desktop columns.
+ */
+@media (max-width: 767px) {
+  /*
+   * Phone: keep Footer in normal document flow (not viewport-stuck).
+   * Desktop/tablet still use margin-top:auto to pin short routes.
+   * Without this, Account (and other short pages) show a huge empty band
+   * between content and Footer inside the flex main.
+   */
+  .storefront-footer {
+    margin-top: var(--b25-space-8); /* 32px — deliberate section gap */
+    margin-inline: auto;
+    margin-bottom: 0;
+    padding: 20px clamp(16px, 4vw, 22px)
+      calc(var(--storefront-mobile-nav-pad, 76px) + 6px);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--b25-surface) 28%, transparent),
+        color-mix(in srgb, var(--b25-surface) 78%, var(--b25-canvas-subtle))
+      );
+  }
+
+  /* Stop main body from absorbing leftover viewport height above the Footer. */
+  .b25-customer-main:has(.storefront-footer) .b25-customer-main__body {
+    flex: 0 1 auto;
+    padding-bottom: 0;
+  }
+
+  /* Footer owns bottom-nav clearance so its surface continues under the pad. */
+  .b25-customer-shell:has(.storefront-mobile-nav) .b25-customer-main:has(.storefront-footer) {
+    padding-bottom: 0;
+  }
+
+  .b25-customer-shell.is-dark .storefront-footer {
+    background:
+      linear-gradient(180deg, rgba(39, 46, 51, 0.42), #1c2226);
+  }
+
+  .storefront-footer__inner,
+  .storefront-footer__legal--desktop {
+    display: none;
+  }
+
+  .storefront-footer__trace {
+    display: block;
+    left: clamp(16px, 4vw, 22px);
+    width: 36px;
+  }
+
+  .storefront-footer__mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .storefront-footer__mobile-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .storefront-footer__mobile-brand .storefront-footer__mark {
+    font-size: 14px;
+  }
+
+  .storefront-footer__mobile-brand .storefront-footer__tagline {
+    max-width: 34ch;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .storefront-footer__chips {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    min-width: 0;
+  }
+
+  /*
+   * One shared chip system for category Links AND auth buttons.
+   * Buttons must not inherit UA / shell button weight that makes
+   * Sign in / Create account look larger than Shop all.
+   */
+  .storefront-footer__chips a.storefront-footer__chip,
+  .storefront-footer__chips button.storefront-footer__chip {
+    display: inline-flex;
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 0 8px 0 11px;
+    border: 1px solid color-mix(in srgb, var(--b25-border) 78%, transparent);
+    border-radius: var(--b26-radius-sm);
+    background: color-mix(in srgb, var(--b25-surface) 88%, transparent);
+    color: var(--b25-text);
+    font-family: var(--b25-font-body);
+    font-size: 12px;
+    font-weight: 520;
+    font-style: normal;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    text-align: left;
+    text-decoration: none;
+    text-transform: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color 150ms var(--b26-ease-out),
+      border-color 150ms var(--b26-ease-out),
+      color 150ms var(--b26-ease-out);
+  }
+
+  .storefront-footer__chips a.storefront-footer__chip > span,
+  .storefront-footer__chips button.storefront-footer__chip > span {
+    min-width: 0;
+    overflow: hidden;
+    color: inherit;
+    font: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .storefront-footer__chips a.storefront-footer__chip > svg,
+  .storefront-footer__chips button.storefront-footer__chip > svg {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    color: var(--b25-accent);
+    opacity: 0.82;
+  }
+
+  .storefront-footer__chips a.storefront-footer__chip:active,
+  .storefront-footer__chips button.storefront-footer__chip:active {
+    border-color: color-mix(in srgb, var(--b25-accent) 34%, var(--b25-border));
+    background: color-mix(in srgb, var(--b25-accent) 10%, var(--b25-surface));
+    color: var(--b25-accent);
+  }
+
+  .storefront-footer__chips a.storefront-footer__chip:focus:not(:focus-visible),
+  .storefront-footer__chips button.storefront-footer__chip:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .b25-customer-shell.is-dark .storefront-footer__chips a.storefront-footer__chip,
+  .b25-customer-shell.is-dark .storefront-footer__chips button.storefront-footer__chip {
+    background: color-mix(in srgb, #272e33 88%, transparent);
+    border-color: color-mix(in srgb, var(--b25-border) 90%, transparent);
+  }
+
+  .b25-customer-shell.is-dark .storefront-footer__chips a.storefront-footer__chip:active,
+  .b25-customer-shell.is-dark .storefront-footer__chips button.storefront-footer__chip:active {
+    background: color-mix(in srgb, var(--b25-accent) 14%, #272e33);
+  }
+
+  .storefront-footer__trust {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .storefront-footer__trust li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    padding: 2px 0 0;
+    color: var(--b25-text-secondary);
+    font-size: 10.5px;
+    font-weight: 520;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    direction: ltr;
+  }
+
+  .storefront-footer__trust li > span {
+    min-width: 0;
+    order: 1;
+    white-space: nowrap;
+  }
+
+  .storefront-footer__trust li > svg {
+    flex: 0 0 auto;
+    order: 2;
+    width: 15px;
+    height: 15px;
+    color: var(--b25-accent);
+  }
+
+  .storefront-footer__payments {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin-inline: auto;
+    padding-top: 2px;
+  }
+
+  .storefront-footer__payments .payment-method-tile {
+    height: 22px;
+  }
+
+  .storefront-footer__payments .payment-method-tile img {
+    height: 22px;
+    max-width: 36px;
+  }
+
+  .storefront-footer__mobile .storefront-footer__legal {
+    width: 100%;
+    margin: 12px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid color-mix(in srgb, var(--b25-border) 55%, transparent);
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 0.07em;
+  }
+}
+
+@media (max-width: 340px) {
+  .storefront-footer__chips {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .storefront-footer__nav a,
+  .storefront-footer__chips a.storefront-footer__chip,
+  .storefront-footer__chips button.storefront-footer__chip {
+    transition-duration: 0.01ms;
+    transition-delay: 0ms;
+  }
+}
